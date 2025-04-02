@@ -1,2 +1,2 @@
-# gweather
+# GWeather
 A GCash Employment Exercise
