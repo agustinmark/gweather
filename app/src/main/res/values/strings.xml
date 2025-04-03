@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">GWeather</string>
+
+    <string name="tab_today">Today</string>
+    <string name="tab_archive">Archive</string>
+
+    <!-- Weather Today -->
+    <string name="lbl_greetings_user">Hello, %s!</string>
+    <string name="lbl_temperature_celsius">%d&#176;C</string>
+    <string name="lbl_temperature_fahrenheit">%d&#176;F</string>
+    <string name="lbl_temperature_kelvin">%d&#176;K</string>
+    <string name="lbl_feels_like">Feels like %d&#176;</string>
+    <string name="lbl_temperature">%d&#176;</string>
+    <string name="lbl_location">%1$s, %2$s</string>
+    <string name="lbl_sunrise">Sunrise</string>
+    <string name="lbl_sunset">Sunset</string>
+    <string name="lbl_cloudiness">Cloudiness</string>
+    <string name="lbl_cloudiness_percent">%d%%</string>
+    <string name="lbl_wind">Wind</string>
+    <string name="lbl_wind_stats_metric">%1d&#176; / %2dkph</string>
+    <string name="lbl_wind_stats_imperial">%1d&#176; / %2dmph</string>
+    <string name="lbl_humidity">Humidity</string>
+    <string name="lbl_humidity_percent">%d%%</string>
+    <string name="txt_error">Ooops! Something went wrong.</string>
+    <string name="btn_retry">Retry</string>
+
+    <!-- Location Permission -->
+    <string name="btn_grant_location_permission">Grant Location Permission</string>
+    <string name="txt_location_permission_request">Checking out the weather?\nLet us know your precise location and we\'ll try to find you.</string>
+    <string name="txt_location_permission_permissions_denied">Tell us where to find you!\nThis is to ensure precise data is presented.</string>
+    <string name="txt_location_permission_partial">Almost found you!\nLet us know where you are exactly. We need your precise location.</string>
+
 </resources>
