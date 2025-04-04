@@ -5,7 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -67,11 +69,17 @@ fun WeatherArchive(viewModel: WeatherArchiveViewModel = hiltViewModel()) {
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier
-                    .padding(top = 32.dp, start = 16.dp, end = 16.dp)
+                    .padding(horizontal = 16.dp)
                     .fillMaxSize()
             ) {
+                item {
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
                 items(items = archive) { data ->
                     ArchiveEntry(data)
+                }
+                item {
+                    Spacer(modifier = Modifier.height(12.dp))
                 }
             }
         }

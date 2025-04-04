@@ -20,7 +20,8 @@
 
         <activity android:name=".ui.GWeatherActivity"
             android:exported="true"
-            android:theme="@style/Theme.GWeather">
+            android:theme="@style/Theme.GWeather"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -1,7 +1,9 @@
 package com.virent.gweather.ui.models
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.virent.gweather.data.AuthenticationRepository
 import com.virent.gweather.domain.GetUserArchiveUseCase
 import com.virent.gweather.domain.WeatherData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,14 +16,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WeatherArchiveViewModel @Inject constructor(
-    private val getUserArchiveUseCase: GetUserArchiveUseCase
+    private val getUserArchiveUseCase: GetUserArchiveUseCase,
+    private val authRepository: AuthenticationRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<WeatherArchiveUiState>(WeatherArchiveUiState.Empty)
     val uiState: StateFlow<WeatherArchiveUiState> = _uiState.asStateFlow()
 
     init {
-        retrieveUserArchive("theyellowace@gmail.com")
+        retrieveUserArchive(authRepository.currentUser!!.email!!)
     }
 
     fun retrieveUserArchive(user: String) {

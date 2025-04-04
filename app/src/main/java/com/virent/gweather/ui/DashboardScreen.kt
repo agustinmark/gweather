@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -24,18 +23,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.virent.gweather.R
 import com.virent.gweather.ui.theme.GWeatherTheme
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
+
+@Serializable
+object DashboardRoute
 
 enum class DashboardTabs(
     @StringRes val tabStringRes: Int,
-    @DrawableRes val iconRes: Int,
-    val content: @Composable () -> Unit
+    @DrawableRes val iconRes: Int
 ) {
-    TODAY(R.string.tab_today, R.drawable.ic_today, { WeatherToday() }),
-    ARCHIVE(R.string.tab_archive, R.drawable.ic_archive, { WeatherArchive() })
+    TODAY(R.string.tab_today, R.drawable.ic_today),
+    ARCHIVE(R.string.tab_archive, R.drawable.ic_archive)
 }
 
 @Composable
-fun DashboardScreen() {
+fun DashboardScreen(
+    onSignOut: () -> Unit,
+    showSnackbar: (String) -> Unit
+) {
     val pagerState = rememberPagerState(
         initialPage = DashboardTabs.TODAY.ordinal,
         pageCount = { DashboardTabs.entries.size }
@@ -43,7 +48,7 @@ fun DashboardScreen() {
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         bottomBar = {
-            TabBar(
+            DashboardTabBar(
                 selectedTabIndex = pagerState.currentPage,
                 onNavigate = { id ->
                     coroutineScope.launch {
@@ -55,13 +60,16 @@ fun DashboardScreen() {
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
         HorizontalPager(pagerState, modifier = Modifier.padding(innerPadding)) { page ->
-            DashboardTabs.entries[page].content()
+            when (page) {
+                DashboardTabs.TODAY.ordinal -> WeatherToday(onSignOut, showSnackbar)
+                DashboardTabs.ARCHIVE.ordinal -> WeatherArchive()
+            }
         }
     }
 }
 
 @Composable
-fun TabBar(
+fun DashboardTabBar(
     selectedTabIndex: Int = DashboardTabs.TODAY.ordinal,
     currentPage: Int = DashboardTabs.TODAY.ordinal,
     onNavigate: (Int) -> Unit = {}
@@ -100,6 +108,6 @@ fun TabBar(
 @Composable
 fun DashboardPreview() {
     GWeatherTheme {
-        DashboardScreen()
+        DashboardScreen({}, {})
     }
 }
