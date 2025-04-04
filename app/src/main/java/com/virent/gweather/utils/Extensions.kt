@@ -1,9 +1,11 @@
 package com.virent.gweather.utils
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
 import com.virent.gweather.R
 import com.virent.gweather.domain.WeatherCondition
 import java.time.Instant
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
 
@@ -19,7 +21,13 @@ fun Long.asTimeString(offset: Int): String {
     return localDateTime.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"))
 }
 
-fun String.sentenceCase(): String {
+fun Long.dateTimeHour(offset: Int): Int {
+    val instant = Instant.ofEpochSecond(this)
+    val localDateTime = instant.atZone(ZoneOffset.ofTotalSeconds(offset)).toLocalDateTime()
+    return localDateTime.hour
+}
+
+fun String.upperCaseFirst(): String {
     return this.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
 }
 
@@ -36,5 +44,20 @@ fun WeatherCondition.fetchLottieResource(): Int {
         WeatherCondition.ATMOSPHERE -> R.raw.lottie_mist
         WeatherCondition.CLEAR -> if (isNight) R.raw.lottie_night_clear_sky else R.raw.lottie_clear_sky
         WeatherCondition.CLOUDS -> if (isNight) R.raw.lottie_night_clouds else R.raw.lottie_clouds
+    }
+}
+
+@DrawableRes
+fun WeatherCondition.fetchIconResource(hour: Int): Int {
+    val isNight = hour in 18..23 || hour in 0..5
+
+    return when (this) {
+        WeatherCondition.THUNDERSTORM -> if (isNight) R.drawable.ic_night_thunderstorm else R.drawable.ic_thunderstorm
+        WeatherCondition.DRIZZLE -> R.drawable.ic_shower_rain
+        WeatherCondition.RAIN -> if (isNight) R.drawable.ic_night_rain else R.drawable.ic_rain
+        WeatherCondition.SNOW -> if (isNight) R.drawable.ic_night_snow else R.drawable.ic_snow
+        WeatherCondition.ATMOSPHERE -> R.drawable.ic_mist
+        WeatherCondition.CLEAR -> if (isNight) R.drawable.ic_night_clear_sky else R.drawable.ic_clear_sky
+        WeatherCondition.CLOUDS -> if (isNight) R.drawable.ic_night_clouds else R.drawable.ic_clouds
     }
 }

@@ -24,6 +24,11 @@
     <string name="txt_error">Ooops! Something went wrong.</string>
     <string name="btn_retry">Retry</string>
 
+    <!-- Weather Archive -->
+    <string name="txt_nothing_here">Nothing to see here.</string>
+    <string name="btn_refresh">Refresh</string>
+
+
     <!-- Location Permission -->
     <string name="btn_grant_location_permission">Grant Location Permission</string>
     <string name="txt_location_permission_request">Checking out the weather?\nLet us know your precise location and we\'ll try to find you.</string>
