@@ -1,11 +1,26 @@
 <resources>
     <string name="app_name">GWeather</string>
 
+    <string name="tab_signup">Sign Up</string>
+    <string name="tab_login">Log In</string>
+    <string name="tab_signin">Sign In</string>
     <string name="tab_today">Today</string>
     <string name="tab_archive">Archive</string>
 
+    <!-- Sign Up -->
+    <string name="lbl_email">Email</string>
+    <string name="lbl_password">Password</string>
+    <string name="lbl_display_name">Display Name</string>
+    <string name="lbl_repeat_password">Repeat Password</string>
+    <string name="btn_register">Register</string>
+    <string name="btn_login">Login</string>
+    <string name="txt_invalid_email">Invalid email</string>
+    <string name="txt_invalid_password">Passwords should have at least eight digits and include one digit, one lower case letter and one upper case letter</string>
+    <string name="txt_passwords_do_not_match">Passwords do not match</string>
+
     <!-- Weather Today -->
-    <string name="lbl_greetings_user">Hello, %s!</string>
+    <string name="lbl_greetings">Hello!</string>
+    <string name="lbl_greetings_user">Hey, %s!</string>
     <string name="lbl_temperature_celsius">%d&#176;C</string>
     <string name="lbl_temperature_fahrenheit">%d&#176;F</string>
     <string name="lbl_temperature_kelvin">%d&#176;K</string>
@@ -23,11 +38,11 @@
     <string name="lbl_humidity_percent">%d%%</string>
     <string name="txt_error">Ooops! Something went wrong.</string>
     <string name="btn_retry">Retry</string>
+    <string name="btn_logout">Logout</string>
 
     <!-- Weather Archive -->
     <string name="txt_nothing_here">Nothing to see here.</string>
     <string name="btn_refresh">Refresh</string>
-
 
     <!-- Location Permission -->
     <string name="btn_grant_location_permission">Grant Location Permission</string>

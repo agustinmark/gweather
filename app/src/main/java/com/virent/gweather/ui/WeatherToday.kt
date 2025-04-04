@@ -57,6 +57,7 @@ import com.virent.gweather.ui.models.WeatherTodayUiState
 import com.virent.gweather.ui.models.WeatherTodayViewModel
 import com.virent.gweather.ui.theme.GWeatherTheme
 import com.virent.gweather.utils.asDateTimeString
+import com.virent.gweather.utils.extractUsername
 import com.virent.gweather.utils.fetchLottieResource
 import com.virent.gweather.utils.upperCaseFirst
 import kotlinx.coroutines.launch
@@ -66,7 +67,11 @@ import java.util.Locale
 @SuppressLint("MissingPermission")
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun WeatherToday(viewModel: WeatherTodayViewModel = hiltViewModel()) {
+fun WeatherToday(
+    onSignOut: () -> Unit,
+    showSnackbar: (String) -> Unit,
+    viewModel: WeatherTodayViewModel = hiltViewModel()
+) {
     val uiState = viewModel.uiState.collectAsState()
     var location by remember { mutableStateOf<Location?>(null) }
 
@@ -89,8 +94,24 @@ fun WeatherToday(viewModel: WeatherTodayViewModel = hiltViewModel()) {
             when (uiState.value) {
                 is WeatherTodayUiState.Loading -> LoadingIndicator()
                 is WeatherTodayUiState.Success -> {
-                    val weatherData = (uiState.value as WeatherTodayUiState.Success).data
-                    UserGreeting()
+                    val (email, weatherData) = (uiState.value as WeatherTodayUiState.Success)
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        UserGreeting(email)
+                        Button(
+                            onClick = {
+                                viewModel.signOut(onSignOut, showSnackbar)
+                            }
+                        ) {
+                            Text(
+                                stringResource(R.string.btn_logout),
+                                style = typography.labelMedium
+                            )
+                        }
+                    }
                     Spacer(modifier = Modifier.height(24.dp))
                     WeatherInfo(
                         dateTime = weatherData.dateTime,
@@ -213,13 +234,20 @@ fun LocationPermissionHandler(
 }
 
 @Composable
-fun UserGreeting() {
-    // TODO: Update after sign-in implementation
-    Text(
-        text = stringResource(id = R.string.lbl_greetings_user, "Mark"),
-        style = typography.headlineSmall,
-        fontWeight = FontWeight.Medium
-    )
+fun UserGreeting(email: String?) {
+    email?.run {
+        Text(
+            text = stringResource(id = R.string.lbl_greetings_user, this.extractUsername()),
+            style = typography.headlineSmall,
+            fontWeight = FontWeight.Medium
+        )
+    } ?: @Composable {
+        Text(
+            text = stringResource(id = R.string.lbl_greetings),
+            style = typography.headlineSmall,
+            fontWeight = FontWeight.Medium
+        )
+    }
 }
 
 @Composable
@@ -313,6 +341,6 @@ fun WeatherInfo(
 @Composable
 fun WeatherTodayPreview() {
     GWeatherTheme {
-        WeatherToday()
+        WeatherToday(onSignOut = {}, showSnackbar = {})
     }
 }

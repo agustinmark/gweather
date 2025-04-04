@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "210313168781",
+    "project_id": "gweather-ed6e1",
+    "storage_bucket": "gweather-ed6e1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:210313168781:android:30005f673c3036eacfdfc4",
+        "android_client_info": {
+          "package_name": "com.virent.gweather"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdJnTNlQBDfeKag1vb7hzWjUlTO8HwItQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

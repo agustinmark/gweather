@@ -1,13 +1,14 @@
 package com.virent.gweather.utils
 
+import android.util.Patterns
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
 import com.virent.gweather.R
 import com.virent.gweather.domain.WeatherCondition
 import java.time.Instant
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
+import java.util.regex.Pattern
 
 fun Long.asDateTimeString(offset: Int): String {
     val instant = Instant.ofEpochSecond(this)
@@ -60,4 +61,22 @@ fun WeatherCondition.fetchIconResource(hour: Int): Int {
         WeatherCondition.CLEAR -> if (isNight) R.drawable.ic_night_clear_sky else R.drawable.ic_clear_sky
         WeatherCondition.CLOUDS -> if (isNight) R.drawable.ic_night_clouds else R.drawable.ic_clouds
     }
+}
+
+private const val MIN_PASSWORD_LENGTH = 8
+private const val PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{4,}$"
+
+fun String.isValidEmail(): Boolean {
+    return this.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
+}
+
+fun String.isValidPassword(): Boolean {
+    return this.isNotBlank() &&
+            this.length >= MIN_PASSWORD_LENGTH &&
+            Pattern.compile(PASSWORD_PATTERN).matcher(this).matches()
+}
+
+fun String.extractUsername(): String {
+    val atIndex = this.indexOf('@')
+    return this.substring(0, atIndex)
 }
