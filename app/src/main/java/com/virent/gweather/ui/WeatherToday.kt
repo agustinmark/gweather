@@ -4,10 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.location.Location
-import android.util.Log
 import androidx.annotation.RequiresPermission
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.typography
@@ -62,7 +58,7 @@ import com.virent.gweather.ui.models.WeatherTodayViewModel
 import com.virent.gweather.ui.theme.GWeatherTheme
 import com.virent.gweather.utils.asDateTimeString
 import com.virent.gweather.utils.fetchLottieResource
-import com.virent.gweather.utils.sentenceCase
+import com.virent.gweather.utils.upperCaseFirst
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.Locale
@@ -71,7 +67,6 @@ import java.util.Locale
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun WeatherToday(viewModel: WeatherTodayViewModel = hiltViewModel()) {
-    val scrollState = rememberScrollState()
     val uiState = viewModel.uiState.collectAsState()
     var location by remember { mutableStateOf<Location?>(null) }
 
@@ -84,13 +79,10 @@ fun WeatherToday(viewModel: WeatherTodayViewModel = hiltViewModel()) {
             }
         }
     ) {
+        // TODO: Add pull to refresh
         Column(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
-                .scrollable(
-                    orientation = Orientation.Vertical,
-                    state = scrollState
-                )
                 .padding(24.dp)
                 .fillMaxSize()
         ) {
@@ -128,12 +120,11 @@ fun WeatherToday(viewModel: WeatherTodayViewModel = hiltViewModel()) {
                 }
 
                 is WeatherTodayUiState.Error -> {
-                    val errorMessage = (uiState.value as WeatherTodayUiState.Error).errorMessage
+                    val errorMessage = (uiState.value as WeatherTodayUiState.Error).message
                     ErrorIndicator(
                         message = errorMessage,
                         onRetry = {
                             location?.run {
-                                Log.v("TEST", "location: $latitude,$longitude")
                                 viewModel.fetchWeather(latitude, longitude)
                             }
                         }
@@ -287,7 +278,7 @@ fun WeatherInfo(
                     style = typography.titleMedium
                 )
                 Text(
-                    text = description.sentenceCase(),
+                    text = description.upperCaseFirst(),
                     style = typography.titleMedium
                 )
             }

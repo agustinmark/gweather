@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt.gradle)
-    //alias(libs.plugins.ksp)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.kapt)
 }
 
@@ -92,4 +92,10 @@ dependencies {
     implementation(libs.play.services.location)
     implementation(libs.accompanist.permissions)
     implementation(libs.kotlinx.coroutines.play.services)
+
+    //Room
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+    testImplementation(kotlin("test"))
 }

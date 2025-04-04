@@ -16,6 +16,7 @@ interface GetCurrentWeatherUseCase {
 class GetCurrentWeatherUseCaseImpl @Inject constructor(
     private val repository: WeatherRepository
 ) : GetCurrentWeatherUseCase {
+
     override suspend fun invoke(
         lat: Double,
         long: Double,
