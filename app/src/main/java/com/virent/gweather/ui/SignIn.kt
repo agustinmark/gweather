@@ -27,8 +27,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.virent.gweather.R
-import com.virent.gweather.ui.models.SignInUiState
-import com.virent.gweather.ui.models.SignInViewModel
+import com.virent.gweather.viewmodels.SignInUiState
+import com.virent.gweather.viewmodels.SignInViewModel
 
 @Composable
 fun SignIn(
@@ -45,7 +45,7 @@ fun SignIn(
     Column(modifier = Modifier.fillMaxSize()) {
         AnimatedVisibility(isLoading) {
             LinearProgressIndicator(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().height(10.dp)
             )
         }
         Spacer(modifier = Modifier.height(24.dp))
@@ -101,7 +101,7 @@ fun SignIn(
                 style = typography.titleMedium
             )
         }
-
+        Spacer(modifier = Modifier.height(36.dp))
     }
 
 }

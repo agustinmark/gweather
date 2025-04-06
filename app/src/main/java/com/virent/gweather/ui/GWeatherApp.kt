@@ -1,7 +1,11 @@
 package com.virent.gweather.ui
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -23,9 +27,12 @@ fun GWeatherApp() {
 
     GWeatherTheme {
         Scaffold(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().imePadding(),
             snackbarHost = { SnackbarHost(snackbarHostState) }
         ) { innerPadding ->
+            Box (
+                modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())
+            ) {
             NavHost(
                 navController = navController,
                 startDestination = LandingRoute,
@@ -57,7 +64,7 @@ fun GWeatherApp() {
                         }
                     )
                 }
-            }
+            }}
         }
     }
 }

@@ -1,9 +1,7 @@
 package com.virent.gweather.ui
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,8 +27,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.virent.gweather.R
-import com.virent.gweather.ui.models.SignUpUiState
-import com.virent.gweather.ui.models.SignUpViewModel
+import com.virent.gweather.viewmodels.SignUpUiState
+import com.virent.gweather.viewmodels.SignUpViewModel
 
 @Composable
 fun SignUp(
@@ -48,7 +46,7 @@ fun SignUp(
     Column(modifier = Modifier.fillMaxSize()) {
         AnimatedVisibility(isLoading) {
             LinearProgressIndicator(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().height(10.dp)
             )
         }
         Spacer(modifier = Modifier.height(24.dp))
@@ -121,6 +119,7 @@ fun SignUp(
                 style = typography.titleMedium
             )
         }
+        Spacer(modifier = Modifier.height(36.dp))
 
     }
 }

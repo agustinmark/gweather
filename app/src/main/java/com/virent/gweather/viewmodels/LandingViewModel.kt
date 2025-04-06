@@ -1,4 +1,4 @@
-package com.virent.gweather.ui.models
+package com.virent.gweather.viewmodels
 
 import androidx.lifecycle.ViewModel
 import com.virent.gweather.data.AuthenticationRepository

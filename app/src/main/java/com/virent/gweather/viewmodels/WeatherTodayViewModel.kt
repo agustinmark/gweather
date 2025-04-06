@@ -1,6 +1,5 @@
-package com.virent.gweather.ui.models
+package com.virent.gweather.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.virent.gweather.data.AuthenticationRepository
@@ -62,7 +61,7 @@ class WeatherTodayViewModel @Inject constructor(
         }
         ) {
             authRepository.signOut()
-            onSignOut
+            onSignOut()
         }
     }
 }

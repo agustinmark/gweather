@@ -1,0 +1,45 @@
+{
+  "coord": {
+    "lon": 120.9902,
+    "lat": 14.4659
+  },
+  "weather": [
+    {
+      "id": 803,
+      "main": "Clouds",
+      "description": "broken clouds",
+      "icon": "04d"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 32.86,
+    "feels_like": 39.86,
+    "temp_min": 31.14,
+    "temp_max": 33,
+    "pressure": 1011,
+    "humidity": 62,
+    "sea_level": 1011,
+    "grnd_level": 1006
+  },
+  "visibility": 10000,
+  "wind": {
+    "speed": 4.12,
+    "deg": 120
+  },
+  "clouds": {
+    "all": 75
+  },
+  "dt": 1743827949,
+  "sys": {
+    "type": 2,
+    "id": 2005706,
+    "country": "PH",
+    "sunrise": 1743803336,
+    "sunset": 1743847698
+  },
+  "timezone": 28800,
+  "id": 7729845,
+  "name": "Sambayanihan People's Village",
+  "cod": 200
+}
