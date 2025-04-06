@@ -13,7 +13,8 @@ data class CurrentWeatherResponse(
     val timezone: Int,
     val id: Int,
     val name: String,
-    val cod: Int
+    val cod: Int,
+    val message: String
 )
 data class Coord(val lon: Double, val lat: Double)
 data class Weather(val id: Int, val main: String, val description: String, val icon: String)

@@ -1,6 +1,5 @@
-package com.virent.gweather.ui.models
+package com.virent.gweather.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.virent.gweather.data.AuthenticationRepository
@@ -8,9 +7,12 @@ import com.virent.gweather.utils.isValidEmail
 import com.virent.gweather.utils.isValidPassword
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +22,7 @@ class SignUpViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<SignUpUiState>(SignUpUiState.Idle)
-    val uiState: StateFlow<SignUpUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<SignUpUiState> = _uiState.stateIn(viewModelScope, SharingStarted.Lazily, SignUpUiState.Idle)
 
     fun signUp(
         email: String,
@@ -29,6 +31,7 @@ class SignUpViewModel @Inject constructor(
         showSnackbar: (String) -> Unit,
         onSignedIn: () -> Unit
     ) {
+        _uiState.value = SignUpUiState.Loading
         if (!email.isValidEmail()) {
             showSnackbar("Invalid email.")
         }
@@ -38,6 +41,7 @@ class SignUpViewModel @Inject constructor(
         }
 
         if (password != repeatPassword) {
+            _uiState.value = SignUpUiState.Idle
             showSnackbar("Passwords do not match")
             return
         }
@@ -45,16 +49,17 @@ class SignUpViewModel @Inject constructor(
         viewModelScope.launch(
             CoroutineExceptionHandler { _, throwable ->
                 throwable.message?.let {
+                    _uiState.value = SignUpUiState.Idle
                     showSnackbar(it)
                 }
             }
         ) {
-            _uiState.value = SignUpUiState.Loading
             authRepository.signUp(email, password)
             showSnackbar("Signing in..")
+            _uiState.value = SignUpUiState.Success
             authRepository.signIn(email, password)
             showSnackbar("Sign in successful")
-            _uiState.value = SignUpUiState.Idle
+            _uiState.value = SignUpUiState.Authenticated
             onSignedIn()
         }
     }
@@ -63,4 +68,6 @@ class SignUpViewModel @Inject constructor(
 sealed class SignUpUiState {
     data object Idle : SignUpUiState()
     data object Loading : SignUpUiState()
+    data object Success : SignUpUiState()
+    data object Authenticated : SignUpUiState()
 }

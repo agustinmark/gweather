@@ -53,8 +53,8 @@ import com.virent.gweather.ui.components.AdditionalInfo
 import com.virent.gweather.ui.components.ErrorIndicator
 import com.virent.gweather.ui.components.LoadingIndicator
 import com.virent.gweather.ui.components.SunInfo
-import com.virent.gweather.ui.models.WeatherTodayUiState
-import com.virent.gweather.ui.models.WeatherTodayViewModel
+import com.virent.gweather.viewmodels.WeatherTodayUiState
+import com.virent.gweather.viewmodels.WeatherTodayViewModel
 import com.virent.gweather.ui.theme.GWeatherTheme
 import com.virent.gweather.utils.asDateTimeString
 import com.virent.gweather.utils.extractUsername

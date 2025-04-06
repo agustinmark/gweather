@@ -78,5 +78,6 @@ fun String.isValidPassword(): Boolean {
 
 fun String.extractUsername(): String {
     val atIndex = this.indexOf('@')
-    return this.substring(0, atIndex)
+    return if (atIndex == -1) ""
+    else this.substring(0, atIndex)
 }

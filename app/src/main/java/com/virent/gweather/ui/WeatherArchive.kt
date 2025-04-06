@@ -3,9 +3,7 @@ package com.virent.gweather.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,10 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
@@ -38,8 +34,8 @@ import com.virent.gweather.domain.WeatherData
 import com.virent.gweather.ui.components.EmptyIndicator
 import com.virent.gweather.ui.components.ErrorIndicator
 import com.virent.gweather.ui.components.LoadingIndicator
-import com.virent.gweather.ui.models.WeatherArchiveUiState
-import com.virent.gweather.ui.models.WeatherArchiveViewModel
+import com.virent.gweather.viewmodels.WeatherArchiveUiState
+import com.virent.gweather.viewmodels.WeatherArchiveViewModel
 import com.virent.gweather.utils.asDateTimeString
 import com.virent.gweather.utils.asTimeString
 import com.virent.gweather.utils.dateTimeHour

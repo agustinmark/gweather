@@ -1,5 +1,7 @@
 package com.virent.gweather.ui
 
+import android.util.Log
+import android.view.WindowManager
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -21,12 +24,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.virent.gweather.R
-import com.virent.gweather.ui.models.LandingViewModel
+import com.virent.gweather.viewmodels.LandingViewModel
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
@@ -85,7 +89,7 @@ fun LandingScreen(
                         }
                     }
                 )
-                HorizontalPager(pagerState, modifier = Modifier.weight(1f)) { page ->
+                HorizontalPager(pagerState, modifier = Modifier.wrapContentHeight()) { page ->
                     when (page) {
                         LandingTabs.SIGN_UP.ordinal -> SignUp(openDashboard, showSnackbar)
                         LandingTabs.SIGN_IN.ordinal -> SignIn(openDashboard, showSnackbar)
