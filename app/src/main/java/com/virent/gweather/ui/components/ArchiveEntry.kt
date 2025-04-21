@@ -80,14 +80,14 @@ fun ArchiveEntry(weatherData: WeatherData, modifier: Modifier = Modifier) {
 private fun DateTimeInfo(dateTime: Long, offset: Int) {
     Row(
         modifier = Modifier
-            .background(colorScheme.tertiaryContainer)
+            .background(colorScheme.primaryContainer)
             .fillMaxWidth()
             .padding(vertical = DateTimeInfoVerticalPadding, horizontal = DateTimeInfoHorizontalPadding)
     ) {
         Text(
             text = dateTime.asDateTimeString(offset),
             style = typography.labelMedium,
-            color = colorScheme.onTertiaryContainer
+            color = colorScheme.onPrimaryContainer
         )
     }
 }
@@ -279,7 +279,7 @@ private fun LocationInfo(city: String, countryCode: String) {
         horizontalArrangement = Arrangement.spacedBy(LocationInfoHorizontalSpacing),
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .background(colorScheme.tertiaryContainer)
+            .background(colorScheme.primaryContainer)
             .fillMaxWidth()
             .padding(vertical = LocationInfoVerticalPadding, horizontal = LocationInfoHorizontalPadding)
     ) {
@@ -295,7 +295,7 @@ private fun LocationInfo(city: String, countryCode: String) {
                 Locale("", countryCode).displayName
             ),
             style = typography.labelMedium,
-            color = colorScheme.onTertiaryContainer
+            color = colorScheme.onPrimaryContainer
         )
     }
 }
