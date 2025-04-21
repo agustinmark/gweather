@@ -1,9 +1,22 @@
 package com.virent.gweather.utils
 
 import android.util.Patterns
-import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.virent.gweather.R
+import com.virent.gweather.core.ui.icons.ClearSky
+import com.virent.gweather.core.ui.icons.Clouds
+import com.virent.gweather.core.ui.icons.GWeatherIcons
+import com.virent.gweather.core.ui.icons.Mist
+import com.virent.gweather.core.ui.icons.NightClearSky
+import com.virent.gweather.core.ui.icons.NightClouds
+import com.virent.gweather.core.ui.icons.NightRain
+import com.virent.gweather.core.ui.icons.NightSnow
+import com.virent.gweather.core.ui.icons.NightThunderstorm
+import com.virent.gweather.core.ui.icons.Rain
+import com.virent.gweather.core.ui.icons.ShowerRain
+import com.virent.gweather.core.ui.icons.Snow
+import com.virent.gweather.core.ui.icons.Thunderstorm
 import com.virent.gweather.domain.WeatherCondition
 import java.time.Instant
 import java.time.LocalTime
@@ -48,18 +61,17 @@ fun WeatherCondition.fetchLottieResource(): Int {
     }
 }
 
-@DrawableRes
-fun WeatherCondition.fetchIconResource(hour: Int): Int {
+fun WeatherCondition.fetchImageVector(hour: Int): ImageVector {
     val isNight = hour in 18..23 || hour in 0..5
 
     return when (this) {
-        WeatherCondition.THUNDERSTORM -> if (isNight) R.drawable.ic_night_thunderstorm else R.drawable.ic_thunderstorm
-        WeatherCondition.DRIZZLE -> R.drawable.ic_shower_rain
-        WeatherCondition.RAIN -> if (isNight) R.drawable.ic_night_rain else R.drawable.ic_rain
-        WeatherCondition.SNOW -> if (isNight) R.drawable.ic_night_snow else R.drawable.ic_snow
-        WeatherCondition.ATMOSPHERE -> R.drawable.ic_mist
-        WeatherCondition.CLEAR -> if (isNight) R.drawable.ic_night_clear_sky else R.drawable.ic_clear_sky
-        WeatherCondition.CLOUDS -> if (isNight) R.drawable.ic_night_clouds else R.drawable.ic_clouds
+        WeatherCondition.THUNDERSTORM -> if (isNight) GWeatherIcons.NightThunderstorm else GWeatherIcons.Thunderstorm
+        WeatherCondition.DRIZZLE -> GWeatherIcons.ShowerRain
+        WeatherCondition.RAIN -> if (isNight) GWeatherIcons.NightRain else GWeatherIcons.Rain
+        WeatherCondition.SNOW -> if (isNight) GWeatherIcons.NightSnow else GWeatherIcons.Snow
+        WeatherCondition.ATMOSPHERE -> GWeatherIcons.Mist
+        WeatherCondition.CLEAR -> if (isNight) GWeatherIcons.NightClearSky else GWeatherIcons.ClearSky
+        WeatherCondition.CLOUDS -> if (isNight) GWeatherIcons.NightClouds else GWeatherIcons.Clouds
     }
 }
 

@@ -19,10 +19,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.virent.gweather.R
+import com.virent.gweather.core.ui.icons.Cloudiness
+import com.virent.gweather.core.ui.icons.GWeatherIcons
+import com.virent.gweather.core.ui.icons.Humidity
+import com.virent.gweather.core.ui.icons.Wind
 
 @Composable
 fun AdditionalInfo(
@@ -35,94 +40,73 @@ fun AdditionalInfo(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = colorScheme.tertiaryContainer,
-                shape = RoundedCornerShape(12.dp)
+                color = colorScheme.secondaryContainer,
+                shape = RoundedCornerShape(AdditionalInfoBackgroundCornerRadius)
             )
-            .padding(all = 16.dp)
+            .padding(all = AdditionalInfoPadding)
     ) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(AdditionalInfoHorizontalSpacing),
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.background(color = colorScheme.tertiaryContainer)
+            modifier = Modifier.background(color = colorScheme.secondaryContainer)
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
+            AdditionalInfoItem(
+                imageVector = GWeatherIcons.Cloudiness,
+                value = stringResource(R.string.lbl_cloudiness_percent, cloudiness),
+                label = stringResource(R.string.lbl_cloudiness),
                 modifier = Modifier.weight(1f)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_cloudiness),
-                    contentDescription = null,
-                    modifier = Modifier.size(48.dp),
-                    tint = colorScheme.onTertiaryContainer
-                )
-                Text(
-                    text = stringResource(R.string.lbl_cloudiness_percent, cloudiness),
-                    style = typography.bodyLarge,
-                    color = colorScheme.onTertiaryContainer
-                )
-                Text(
-                    text = stringResource(R.string.lbl_cloudiness),
-                    style = typography.bodySmall,
-                    color = colorScheme.onTertiaryContainer
-                )
-            }
-            VerticalDivider(
-                color = colorScheme.onTertiaryContainer,
-                modifier = Modifier
-                    .height(32.dp)
-                    .alpha(0.6f)
             )
-            Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.weight(1f)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_wind),
-                    contentDescription = null,
-                    modifier = Modifier.size(48.dp),
-                    tint = colorScheme.onTertiaryContainer
-                )
-                Text(
-                    text = stringResource(R.string.lbl_wind_stats_metric, windDegree, windSpeed.toInt()),
-                    style = typography.bodyLarge,
-                    color = colorScheme.onTertiaryContainer
-                )
-                Text(
-                    text = stringResource(R.string.lbl_wind),
-                    style = typography.bodySmall,
-                    color = colorScheme.onTertiaryContainer
-                )
-            }
             VerticalDivider(
-                color = colorScheme.onTertiaryContainer,
-                modifier = Modifier
-                    .height(32.dp)
-                    .alpha(0.6f)
+                color = colorScheme.onSecondaryContainer,
+                modifier = Modifier.height(AdditionalInfoDividerHeight).alpha(0.6f)
             )
-            Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
+            AdditionalInfoItem(
+                imageVector = GWeatherIcons.Wind,
+                value = stringResource(R.string.lbl_wind_stats_metric, windDegree, windSpeed.toInt()),
+                label = stringResource(R.string.lbl_wind),
                 modifier = Modifier.weight(1f)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_humidity),
-                    contentDescription = null,
-                    modifier = Modifier.size(48.dp),
-                    tint = colorScheme.onTertiaryContainer
-                )
-                Text(
-                    text = stringResource(R.string.lbl_humidity_percent, humidity),
-                    style = typography.bodyLarge,
-                    color = colorScheme.onTertiaryContainer
-                )
-                Text(
-                    text = "Humidity",
-                    style = typography.bodySmall,
-                    color = colorScheme.onTertiaryContainer
-                )
-            }
+            )
+            VerticalDivider(
+                color = colorScheme.onSecondaryContainer,
+                modifier = Modifier.height(AdditionalInfoDividerHeight).alpha(0.6f)
+            )
+            AdditionalInfoItem(
+                imageVector = GWeatherIcons.Humidity,
+                value = stringResource(R.string.lbl_humidity_percent, humidity),
+                label = stringResource(R.string.lbl_humidity),
+                modifier = Modifier.weight(1f)
+            )
         }
     }
 }
+
+@Composable
+fun AdditionalInfoItem(
+    imageVector: ImageVector,
+    value: String,
+    label: String,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(AdditionalInfoItemVerticalSpacing),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
+        Icon(
+            imageVector = imageVector,
+            contentDescription = null,
+            modifier = Modifier.size(AdditionalInfoItemIconSize),
+            tint = colorScheme.onSecondaryContainer
+        )
+        Text(text = value, style = typography.bodyLarge, color = colorScheme.onSecondaryContainer)
+        Text(text = label, style = typography.bodySmall, color = colorScheme.onSecondaryContainer)
+    }
+}
+
+val AdditionalInfoBackgroundCornerRadius = 12.dp
+val AdditionalInfoPadding = 16.dp
+val AdditionalInfoHorizontalSpacing = 12.dp
+val AdditionalInfoDividerHeight = 32.dp
+
+val AdditionalInfoItemIconSize = 48.dp
+val AdditionalInfoItemVerticalSpacing = 4.dp

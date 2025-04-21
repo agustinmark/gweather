@@ -20,13 +20,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.virent.gweather.R
-import com.virent.gweather.ui.theme.GWeatherTheme
+import com.virent.gweather.core.ui.icons.GWeatherIcons
+import com.virent.gweather.core.ui.icons.Humidity
+import com.virent.gweather.core.ui.icons.NightClouds
+import com.virent.gweather.core.ui.theme.GWeatherTheme
 
 
 // TODO: To be used in Hourly Forecast
@@ -76,7 +78,7 @@ fun WeatherHour() {
             color = colorScheme.onSecondaryContainer
         )
         Image(
-            painter = painterResource(id = R.drawable.ic_night_clouds),
+            imageVector = GWeatherIcons.NightClouds,
             contentDescription = null,
             modifier = Modifier.size(40.dp)
         )
@@ -84,7 +86,7 @@ fun WeatherHour() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_humidity),
+                imageVector = GWeatherIcons.Humidity,
                 contentDescription = null,
                 tint = colorScheme.onSecondaryContainer,
                 modifier = Modifier

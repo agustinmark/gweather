@@ -1,5 +1,6 @@
 package com.virent.gweather.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.virent.gweather.data.AuthenticationRepository
@@ -27,7 +28,14 @@ class WeatherTodayViewModel @Inject constructor(
 
     private val currentUser = authRepository.currentUser!!
 
+    fun showError(message: String?) {
+        _uiState.value = WeatherTodayUiState.Error(message = message)
+    }
+
+    fun showLoading() { _uiState.value = WeatherTodayUiState.Loading }
+
     fun fetchWeather(lat: Double, lon: Double, units: String = "metric") {
+        Log.e("Kiiro", "vm.fetchWeather")
         viewModelScope.launch {
             try {
                 _uiState.value = WeatherTodayUiState.Loading
@@ -44,12 +52,9 @@ class WeatherTodayViewModel @Inject constructor(
                         )
                     }
 
-                    is Result.Error -> _uiState.value =
-                        WeatherTodayUiState.Error(message = response.message)
+                    is Result.Error -> showError(response.message)
                 }
-            } catch (e: Exception) {
-                _uiState.value = WeatherTodayUiState.Error(message = e.message)
-            }
+            } catch (e: Exception) { showError(e.message) }
         }
     }
 

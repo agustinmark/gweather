@@ -22,7 +22,13 @@ class WeatherArchiveViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<WeatherArchiveUiState>(WeatherArchiveUiState.Empty)
     val uiState: StateFlow<WeatherArchiveUiState> = _uiState.asStateFlow()
 
+    val currentUser = authRepository.currentUser!!
+
     init {
+        retrieveCurrentUserArchive()
+    }
+
+    fun retrieveCurrentUserArchive() {
         retrieveUserArchive(authRepository.currentUser!!.email!!)
     }
 

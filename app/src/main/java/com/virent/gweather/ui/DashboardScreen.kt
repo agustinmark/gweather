@@ -1,7 +1,6 @@
 package com.virent.gweather.ui
 
 import android.content.res.Configuration
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,11 +16,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.virent.gweather.R
-import com.virent.gweather.ui.theme.GWeatherTheme
+import com.virent.gweather.core.ui.icons.Archive
+import com.virent.gweather.core.ui.icons.GWeatherIcons
+import com.virent.gweather.core.ui.icons.Today
+import com.virent.gweather.core.ui.theme.GWeatherTheme
+import com.virent.gweather.core.ui.theme.gradientBackground
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
@@ -30,15 +35,15 @@ object DashboardRoute
 
 enum class DashboardTabs(
     @StringRes val tabStringRes: Int,
-    @DrawableRes val iconRes: Int
+    val icon: ImageVector
 ) {
-    TODAY(R.string.tab_today, R.drawable.ic_today),
-    ARCHIVE(R.string.tab_archive, R.drawable.ic_archive)
+    TODAY(R.string.tab_today, GWeatherIcons.Today),
+    ARCHIVE(R.string.tab_archive, GWeatherIcons.Archive)
 }
 
 @Composable
 fun DashboardScreen(
-    onSignOut: () -> Unit,
+    toLanding: () -> Unit,
     showSnackbar: (String) -> Unit
 ) {
     val pagerState = rememberPagerState(
@@ -59,10 +64,13 @@ fun DashboardScreen(
         },
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
-        HorizontalPager(pagerState, modifier = Modifier.padding(innerPadding)) { page ->
+        HorizontalPager(
+            state = pagerState,
+            userScrollEnabled = false,
+            modifier = Modifier.gradientBackground().padding(innerPadding)) { page ->
             when (page) {
-                DashboardTabs.TODAY.ordinal -> WeatherToday(onSignOut, showSnackbar)
-                DashboardTabs.ARCHIVE.ordinal -> WeatherArchive()
+                DashboardTabs.TODAY.ordinal -> WeatherTodayTab(toLanding, showSnackbar)
+                DashboardTabs.ARCHIVE.ordinal -> WeatherArchiveTab()
             }
         }
     }
@@ -70,27 +78,24 @@ fun DashboardScreen(
 
 @Composable
 fun DashboardTabBar(
-    selectedTabIndex: Int = DashboardTabs.TODAY.ordinal,
-    currentPage: Int = DashboardTabs.TODAY.ordinal,
+    selectedTabIndex: Int,
     onNavigate: (Int) -> Unit = {}
 ) {
-    TabRow(
-        selectedTabIndex = selectedTabIndex
-    ) {
+    TabRow(selectedTabIndex = selectedTabIndex) {
         DashboardTabs.entries.forEach { tab ->
             val tabName = stringResource(tab.tabStringRes)
             Tab(
                 icon = {
                     Icon(
-                        painter = painterResource(tab.iconRes),
+                        imageVector = tab.icon,
                         contentDescription = tabName,
-                        tint = colorScheme.onSecondaryContainer
+                        tint = colorScheme.onTertiaryContainer
                     )
                 },
-                text = { Text(tabName, color = colorScheme.onSecondaryContainer) },
-                selected = currentPage == selectedTabIndex,
+                text = { Text(tabName, color = colorScheme.onTertiaryContainer) },
+                selected = tab.ordinal == selectedTabIndex,
                 onClick = { onNavigate(tab.ordinal) },
-                modifier = Modifier.background(color = colorScheme.secondaryContainer)
+                modifier = Modifier.background(color = colorScheme.tertiaryContainer)
             )
         }
     }
