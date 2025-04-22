@@ -2,7 +2,7 @@ package com.virent.gweather.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.virent.gweather.data.AuthenticationRepository
+import com.virent.gweather.core.data.AuthenticationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -51,6 +51,7 @@ android {
 
 dependencies {
     implementation(project(":core-ui"))
+    implementation(project(":core-domain"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -78,7 +79,7 @@ dependencies {
     // Lottie
     implementation(libs.lottie.compose)
 
-    // Dagger Hilt
+    // Dagger Hilt - moved to core-database but probably still need these
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
     kapt(libs.androidx.hilt.compiler)
@@ -94,16 +95,11 @@ dependencies {
     implementation(libs.accompanist.permissions)
     implementation(libs.kotlinx.coroutines.play.services)
 
-    //Room
+    //Room -- moved to core-database
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
     testImplementation(kotlin("test"))
-
-    //Firebase
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.analytics)
-    implementation(libs.firebase.auth)
 
     //Testing
     testImplementation(libs.okhttp.mockwebserver)

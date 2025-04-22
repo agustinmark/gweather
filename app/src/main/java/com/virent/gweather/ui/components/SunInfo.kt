@@ -39,19 +39,19 @@ fun SunInfo(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = colorScheme.secondaryContainer,
+                color = colorScheme.surfaceContainer,
                 shape = RoundedCornerShape(SunInfoBackgroundCornerRadius)
             )
-            .padding(all = 16.dp)
+            .padding(all = SunInfoPadding).alpha(0.8f)
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(SunInfoHorizontalSpacing),
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.background(color = colorScheme.secondaryContainer)
+            modifier = Modifier.background(color = colorScheme.surfaceContainer)
         ) {
             Sunrise(offset, sunrise, Modifier.weight(1f))
             VerticalDivider(
-                color = colorScheme.onSecondaryContainer,
+                color = colorScheme.onSurface,
                 modifier = Modifier.height(SunInfoDividerHeight).alpha(0.6f)
             )
             Sunset(offset, sunset, Modifier.weight(1f))
@@ -114,6 +114,7 @@ fun Sunset(
     )
 }
 
+val SunInfoPadding = 16.dp
 val SunInfoBackgroundCornerRadius = 12.dp
 val SunInfoHorizontalSpacing = 12.dp
 val SunInfoDividerHeight = 32.dp

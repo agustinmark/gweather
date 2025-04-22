@@ -17,7 +17,7 @@ import com.virent.gweather.core.ui.icons.Rain
 import com.virent.gweather.core.ui.icons.ShowerRain
 import com.virent.gweather.core.ui.icons.Snow
 import com.virent.gweather.core.ui.icons.Thunderstorm
-import com.virent.gweather.domain.WeatherCondition
+import com.virent.gweather.core.domain.model.WeatherCondition
 import java.time.Instant
 import java.time.LocalTime
 import java.time.ZoneOffset

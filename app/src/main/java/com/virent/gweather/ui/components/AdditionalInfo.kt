@@ -40,15 +40,15 @@ fun AdditionalInfo(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = colorScheme.secondaryContainer,
+                color = colorScheme.surfaceContainer,
                 shape = RoundedCornerShape(AdditionalInfoBackgroundCornerRadius)
             )
-            .padding(all = AdditionalInfoPadding)
+            .padding(all = AdditionalInfoPadding).alpha(0.8f)
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(AdditionalInfoHorizontalSpacing),
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.background(color = colorScheme.secondaryContainer)
+            modifier = Modifier.background(color = colorScheme.surfaceContainer)
         ) {
             AdditionalInfoItem(
                 imageVector = GWeatherIcons.Cloudiness,
@@ -57,7 +57,7 @@ fun AdditionalInfo(
                 modifier = Modifier.weight(1f)
             )
             VerticalDivider(
-                color = colorScheme.onSecondaryContainer,
+                color = colorScheme.onSurface,
                 modifier = Modifier.height(AdditionalInfoDividerHeight).alpha(0.6f)
             )
             AdditionalInfoItem(
@@ -67,7 +67,7 @@ fun AdditionalInfo(
                 modifier = Modifier.weight(1f)
             )
             VerticalDivider(
-                color = colorScheme.onSecondaryContainer,
+                color = colorScheme.onSurface,
                 modifier = Modifier.height(AdditionalInfoDividerHeight).alpha(0.6f)
             )
             AdditionalInfoItem(
@@ -96,10 +96,10 @@ fun AdditionalInfoItem(
             imageVector = imageVector,
             contentDescription = null,
             modifier = Modifier.size(AdditionalInfoItemIconSize),
-            tint = colorScheme.onSecondaryContainer
+            tint = colorScheme.onSurface
         )
-        Text(text = value, style = typography.bodyLarge, color = colorScheme.onSecondaryContainer)
-        Text(text = label, style = typography.bodySmall, color = colorScheme.onSecondaryContainer)
+        Text(text = value, style = typography.bodyLarge, color = colorScheme.onSurface)
+        Text(text = label, style = typography.bodySmall, color = colorScheme.onSurface)
     }
 }
 

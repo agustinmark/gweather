@@ -1,9 +1,7 @@
 package com.virent.gweather
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -11,15 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.virent.gweather.ui.DashboardRoute
-import com.virent.gweather.ui.DashboardScreen
-import com.virent.gweather.ui.LandingRoute
-import com.virent.gweather.ui.LandingScreen
+import com.virent.gweather.ui.screen.DashboardRoute
+import com.virent.gweather.ui.screen.DashboardScreen
+import com.virent.gweather.ui.screen.LandingRoute
+import com.virent.gweather.ui.screen.LandingScreen
 import kotlinx.coroutines.launch
 
 @Composable

@@ -33,8 +33,8 @@ import com.virent.gweather.core.ui.icons.Sunset
 import com.virent.gweather.core.ui.icons.TempMax
 import com.virent.gweather.core.ui.icons.TempMin
 import com.virent.gweather.core.ui.icons.Wind
-import com.virent.gweather.domain.WeatherCondition
-import com.virent.gweather.domain.WeatherData
+import com.virent.gweather.core.domain.model.WeatherCondition
+import com.virent.gweather.core.domain.model.WeatherData
 import com.virent.gweather.utils.asDateTimeString
 import com.virent.gweather.utils.asTimeString
 import com.virent.gweather.utils.dateTimeHour
