@@ -11,7 +11,7 @@ import javax.inject.Inject
 interface GetUserArchiveUseCase {
     suspend operator fun invoke(
         user: String
-    ): Flow<List<WeatherData>> // TODO: Change To Domain Data Class
+    ): Flow<List<WeatherData>>
 }
 
 class GetUserArchiveUseCaseImpl @Inject constructor(
