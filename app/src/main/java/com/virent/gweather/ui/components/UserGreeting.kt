@@ -6,7 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.virent.gweather.R
+import com.virent.gweather.core.ui.theme.GWeatherTheme
 import com.virent.gweather.utils.extractUsername
 
 @Composable
@@ -27,3 +29,14 @@ fun UserGreeting(email: String?) {
         )
     }
 }
+
+@Preview
+@Composable
+private fun MorningPreview() { GWeatherTheme { PreviewContent() } }
+
+@Preview
+@Composable
+private fun EveningPreview() { GWeatherTheme(forcedEveningMode = true) { PreviewContent() } }
+
+@Composable
+private fun PreviewContent() { UserGreeting("abcd") }

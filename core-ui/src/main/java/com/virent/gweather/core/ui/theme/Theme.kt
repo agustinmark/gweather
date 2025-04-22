@@ -3,7 +3,6 @@ package com.virent.gweather.core.ui.theme
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.background
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.darkColorScheme
@@ -19,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
 import java.time.LocalTime
 
 private val lightScheme = lightColorScheme(
@@ -265,9 +263,10 @@ val unspecified_scheme = ColorFamily(
 @Composable
 fun GWeatherTheme(
     dynamicColor: Boolean = false, // Add to setting
+    forcedEveningMode: Boolean = false,
     content: @Composable() () -> Unit
 ) {
-    val currentHour = LocalTime.now().hour
+    val currentHour = if (forcedEveningMode) 23 else LocalTime.now().hour
     val isDarkTheme = currentHour in 18..23 || currentHour in 0..5
 
     val context = LocalContext.current
@@ -275,6 +274,7 @@ fun GWeatherTheme(
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             if (isDarkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
+
         isDarkTheme -> darkScheme
         else -> lightScheme
     }
@@ -283,7 +283,8 @@ fun GWeatherTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = if (isDarkTheme) colorScheme.background.toArgb() else colorScheme.primary.toArgb()
+            window.statusBarColor =
+                if (isDarkTheme) colorScheme.background.toArgb() else colorScheme.primary.toArgb()
         }
     }
 
@@ -301,8 +302,9 @@ fun Modifier.gradientBackground(): Modifier {
             this.background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        Color.Transparent,
-                        Color.LightGray.copy(0.3f),
+                        colorScheme.background,
+                        colorScheme.background.copy(0.3f),
+                        colorScheme.background.copy(0.5f),
                         colorScheme.primary.copy(0.3f),
                         colorScheme.primary.copy(0.5f),
                         colorScheme.primary.copy(0.7f),
@@ -311,17 +313,50 @@ fun Modifier.gradientBackground(): Modifier {
                 )
             )
         }
+
         else -> {
             this.background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
                         colorScheme.primary,
+                        colorScheme.primary.copy(0.9f),
                         colorScheme.primary.copy(0.7f),
                         colorScheme.primary.copy(0.5f),
                         colorScheme.primary.copy(0.3f),
                         Color.LightGray.copy(0.3f),
                         Color.Transparent
                     )
+                )
+            )
+        }
+    }
+}
+
+@Composable
+fun Modifier.radialGradientBackground(): Modifier {
+    return when (LocalTime.now().hour) {
+        in 18..23, in 0..5 -> {
+            this.background(
+                brush = Brush.radialGradient(
+                    colors = listOf(
+                        Color.White,
+                        colorScheme.background
+                    ),
+                    radius = 300f
+                )
+            )
+        }
+        else -> {
+            this.background(
+                brush = Brush.radialGradient(
+                    colors = listOf(
+                        Color.White,
+                        colorScheme.primary.copy(0.1f),
+                        colorScheme.primary.copy(0.3f),
+                        colorScheme.primary.copy(0.7f),
+                        colorScheme.primary
+                    ),
+                    radius = 300f
                 )
             )
         }

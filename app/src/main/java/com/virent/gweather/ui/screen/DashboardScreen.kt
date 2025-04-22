@@ -1,11 +1,11 @@
 package com.virent.gweather.ui.screen
 
-import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -33,33 +33,38 @@ import kotlinx.serialization.Serializable
 @Serializable
 object DashboardRoute
 
-enum class DashboardTabs(
-    @StringRes val tabStringRes: Int,
-    val icon: ImageVector
-) {
+enum class DashboardTabs(@StringRes val tabStringRes: Int, val icon: ImageVector) {
     TODAY(R.string.tab_today, GWeatherIcons.Today),
     ARCHIVE(R.string.tab_archive, GWeatherIcons.Archive)
 }
 
 @Composable
-fun DashboardScreen(
-    toLanding: () -> Unit,
-    showSnackbar: (String) -> Unit
-) {
+fun DashboardScreen(toLanding: () -> Unit, showSnackbar: (String) -> Unit) {
     val pagerState = rememberPagerState(
         initialPage = DashboardTabs.TODAY.ordinal,
         pageCount = { DashboardTabs.entries.size }
     )
+    DashboardDisplay(
+        pagerState = pagerState
+    ) { page ->
+        when (page) {
+            DashboardTabs.TODAY.ordinal -> WeatherTodayTab(toLanding, showSnackbar)
+            DashboardTabs.ARCHIVE.ordinal -> WeatherArchiveTab()
+        }
+    }
+}
+
+@Composable
+fun DashboardDisplay(
+    pagerState: PagerState,
+    content: @Composable (Int) -> Unit
+) {
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         bottomBar = {
             DashboardTabBar(
                 selectedTabIndex = pagerState.currentPage,
-                onNavigate = { id ->
-                    coroutineScope.launch {
-                        pagerState.animateScrollToPage(id)
-                    }
-                }
+                onNavigate = { coroutineScope.launch { pagerState.animateScrollToPage(it) } }
             )
         },
         modifier = Modifier.fillMaxSize()
@@ -67,20 +72,13 @@ fun DashboardScreen(
         HorizontalPager(
             state = pagerState,
             userScrollEnabled = false,
-            modifier = Modifier.gradientBackground().padding(innerPadding)) { page ->
-            when (page) {
-                DashboardTabs.TODAY.ordinal -> WeatherTodayTab(toLanding, showSnackbar)
-                DashboardTabs.ARCHIVE.ordinal -> WeatherArchiveTab()
-            }
-        }
+            modifier = Modifier.gradientBackground().padding(innerPadding)
+        ) { content(it) }
     }
 }
 
 @Composable
-fun DashboardTabBar(
-    selectedTabIndex: Int,
-    onNavigate: (Int) -> Unit = {}
-) {
+fun DashboardTabBar(selectedTabIndex: Int, onNavigate: (Int) -> Unit = {}) {
     TabRow(selectedTabIndex = selectedTabIndex) {
         DashboardTabs.entries.forEach { tab ->
             val tabName = stringResource(tab.tabStringRes)
@@ -101,18 +99,19 @@ fun DashboardTabBar(
     }
 }
 
-@Preview(
-    showBackground = false,
-    name = "Light Mode"
-)
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = false,
-    name = "Dark Mode"
-)
+@Preview
 @Composable
-fun DashboardPreview() {
-    GWeatherTheme {
-        DashboardScreen({}, {})
-    }
+private fun MorningPreview() { GWeatherTheme { PreviewContent() } }
+
+@Preview
+@Composable
+private fun EveningPreview() { GWeatherTheme(forcedEveningMode = true) { PreviewContent() } }
+
+@Composable
+private fun PreviewContent() {
+    val pagerState = rememberPagerState(
+        initialPage = DashboardTabs.TODAY.ordinal,
+        pageCount = { DashboardTabs.entries.size }
+    )
+    DashboardDisplay(pagerState = pagerState){}
 }

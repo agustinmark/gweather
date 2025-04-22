@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -35,6 +36,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.virent.gweather.R
+import com.virent.gweather.core.ui.theme.GWeatherTheme
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -118,4 +120,24 @@ private fun RequestPermission(locationPermissionState: MultiplePermissionsState)
             )
         }
     }
+}
+
+@Preview
+@Composable
+private fun MorningPreview() { GWeatherTheme { PreviewContent() } }
+
+@Preview
+@Composable
+private fun EveningPreview() { GWeatherTheme(forcedEveningMode = true) { PreviewContent() } }
+
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+private fun PreviewContent() {
+    RequestPermission(rememberMultiplePermissionsState(
+            listOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
+    )
 }

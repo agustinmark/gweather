@@ -1,5 +1,6 @@
 package com.virent.gweather.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,9 +25,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.virent.gweather.R
+import com.virent.gweather.core.ui.theme.GWeatherTheme
 import com.virent.gweather.viewmodels.SignUpUiState
 import com.virent.gweather.viewmodels.SignUpViewModel
 
@@ -36,9 +39,24 @@ fun SignUp(
     showSnackbar: (String) -> Unit,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
-    val uiState = viewModel.uiState.collectAsState()
-    val isLoading by remember { mutableStateOf(uiState.value is SignUpUiState.Loading) }
+    val uiState by viewModel.uiState.collectAsState()
+    val isLoading = uiState is SignUpUiState.Loading
 
+    fun signUp(email: String, password: String, repeatPassword: String) {
+        viewModel.signUp(
+            email = email,
+            password = password,
+            repeatPassword = repeatPassword,
+            showSnackbar = { message -> showSnackbar(message) },
+            onSignedIn = openDashboard
+        )
+    }
+
+    SignUpDisplay(isLoading = isLoading, signUp = ::signUp)
+}
+
+@Composable
+private fun SignUpDisplay(isLoading: Boolean, signUp: (String, String, String) -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var repeatPassword by remember { mutableStateOf("") }
@@ -46,14 +64,12 @@ fun SignUp(
     Column(modifier = Modifier.fillMaxSize()) {
         AnimatedVisibility(isLoading) {
             LinearProgressIndicator(
-                modifier = Modifier.fillMaxWidth().height(10.dp)
+                modifier = Modifier.fillMaxWidth().height(SignUpLinearProgressIndicatorHeight)
             )
         }
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(SignUpDisplayTopSpacer))
         OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = SignUpDisplayHorizontalPadding),
             singleLine = true,
             value = email,
             enabled = !isLoading,
@@ -64,11 +80,9 @@ fun SignUp(
                 imeAction = ImeAction.Next
             )
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(SignUpDisplayVerticalSpacer))
         OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = SignUpDisplayHorizontalPadding),
             singleLine = true,
             value = password,
             enabled = !isLoading,
@@ -78,13 +92,11 @@ fun SignUp(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Next
             ),
-            visualTransformation = PasswordVisualTransformation('\u25CF')
+            visualTransformation = PasswordVisualTransformation(SignUpPasswordMask)
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(SignUpDisplayVerticalSpacer))
         OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = SignUpDisplayHorizontalPadding),
             singleLine = true,
             value = repeatPassword,
             enabled = !isLoading,
@@ -94,32 +106,34 @@ fun SignUp(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Next
             ),
-            visualTransformation = PasswordVisualTransformation('\u25CF')
+            visualTransformation = PasswordVisualTransformation(SignUpPasswordMask)
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(SignUpDisplayVerticalSpacer))
         Button(
-            onClick = {
-                viewModel.signUp(
-                    email = email,
-                    password = password,
-                    repeatPassword = repeatPassword,
-                    showSnackbar = { message ->
-                        showSnackbar(message)
-                    },
-                    onSignedIn = openDashboard
-                )
-            },
+            onClick = { signUp(email, password, repeatPassword) },
             enabled = !isLoading,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.btn_register),
-                style = typography.titleMedium
-            )
-        }
-        Spacer(modifier = Modifier.height(36.dp))
-
+            modifier = Modifier.fillMaxWidth().padding(horizontal = SignUpDisplayHorizontalPadding)
+        ) { Text(text = stringResource(R.string.btn_register), style = typography.titleMedium) }
+        Spacer(modifier = Modifier.height(SignUpDisplayBottomSpacer))
     }
 }
+
+val SignUpDisplayTopSpacer = 24.dp
+val SignUpDisplayBottomSpacer = 36.dp
+val SignUpDisplayVerticalSpacer = 16.dp
+val SignUpDisplayHorizontalPadding = 32.dp
+
+val SignUpLinearProgressIndicatorHeight = 8.dp
+
+const val SignUpPasswordMask = '\u25CF'
+
+@Preview
+@Composable
+private fun MorningPreview() { GWeatherTheme { PreviewContent() } }
+
+@Preview
+@Composable
+private fun EveningPreview() { GWeatherTheme(forcedEveningMode = true) { PreviewContent() } }
+
+@Composable
+private fun PreviewContent() { SignUpDisplay(false) { _, _, _ -> } }

@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.virent.gweather.R
 import com.virent.gweather.core.ui.icons.GWeatherIcons
@@ -35,6 +36,7 @@ import com.virent.gweather.core.ui.icons.TempMin
 import com.virent.gweather.core.ui.icons.Wind
 import com.virent.gweather.core.domain.model.WeatherCondition
 import com.virent.gweather.core.domain.model.WeatherData
+import com.virent.gweather.core.ui.theme.GWeatherTheme
 import com.virent.gweather.utils.asDateTimeString
 import com.virent.gweather.utils.asTimeString
 import com.virent.gweather.utils.dateTimeHour
@@ -322,3 +324,35 @@ val LocationInfoVerticalPadding = 8.dp
 val LocationInfoHorizontalPadding = 12.dp
 val LocationInfoHorizontalSpacing = 4.dp
 val LocationInfoIconSize = 16.dp
+
+@Preview
+@Composable
+private fun MorningPreview() { GWeatherTheme { PreviewContent() } }
+
+@Preview
+@Composable
+private fun EveningPreview() { GWeatherTheme(forcedEveningMode = true) { PreviewContent() } }
+
+@Composable
+private fun PreviewContent() {
+    ArchiveEntry(
+        weatherData = WeatherData(
+            dateTime = 1743827949,
+            offset = 28800,
+            weather = WeatherCondition.CLOUDS,
+            description = "broken clouds",
+            temp = 32.86,
+            feelsLike = 39.86,
+            tempMin = 31.14,
+            tempMax = 33.0,
+            cloudiness = 75,
+            humidity = 62,
+            windSpeed = 4.12,
+            windDegree = 120,
+            city = "Sambayanihan People's Village",
+            countryCode = "PH",
+            sunrise = 1743803336,
+            sunset = 1743847698
+        )
+    )
+}

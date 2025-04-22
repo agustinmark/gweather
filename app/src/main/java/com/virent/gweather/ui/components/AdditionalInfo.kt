@@ -20,14 +20,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.virent.gweather.R
 import com.virent.gweather.core.ui.icons.Cloudiness
 import com.virent.gweather.core.ui.icons.GWeatherIcons
 import com.virent.gweather.core.ui.icons.Humidity
 import com.virent.gweather.core.ui.icons.Wind
+import com.virent.gweather.core.ui.theme.GWeatherTheme
 
 @Composable
 fun AdditionalInfo(
@@ -110,3 +111,14 @@ val AdditionalInfoDividerHeight = 32.dp
 
 val AdditionalInfoItemIconSize = 48.dp
 val AdditionalInfoItemVerticalSpacing = 4.dp
+
+@Preview
+@Composable
+private fun MorningPreview() { GWeatherTheme { PreviewContent() } }
+
+@Preview
+@Composable
+private fun EveningPreview() { GWeatherTheme(forcedEveningMode = true) { PreviewContent() } }
+
+@Composable
+private fun PreviewContent() { AdditionalInfo(75, 4.12, 120, 62) }

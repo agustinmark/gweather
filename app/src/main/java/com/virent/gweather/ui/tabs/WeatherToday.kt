@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -30,14 +31,16 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.virent.gweather.R
+import com.virent.gweather.core.domain.model.WeatherCondition
+import com.virent.gweather.core.domain.model.WeatherData
 import com.virent.gweather.core.ui.ErrorIndicator
 import com.virent.gweather.core.ui.LoadingIndicator
-import com.virent.gweather.core.domain.model.WeatherData
-import com.virent.gweather.utils.LocationPermissionHandler
+import com.virent.gweather.core.ui.theme.GWeatherTheme
 import com.virent.gweather.ui.components.AdditionalInfo
 import com.virent.gweather.ui.components.SunInfo
 import com.virent.gweather.ui.components.UserGreeting
 import com.virent.gweather.ui.components.WeatherInfo
+import com.virent.gweather.utils.LocationPermissionHandler
 import com.virent.gweather.viewmodels.WeatherTodayUiState
 import com.virent.gweather.viewmodels.WeatherTodayViewModel
 import kotlinx.coroutines.launch
@@ -164,3 +167,61 @@ private fun WeatherDisplay(
 
 val WeatherTodayContentPadding = 24.dp
 val WeatherTodayVerticalSpacing = 24.dp
+
+@Preview(name = "Morning Preview")
+@Composable
+private fun MorningPreview() {
+    GWeatherTheme {
+        WeatherDisplay(
+            email = "kiiro",
+            onSignOut = {},
+            weatherData = WeatherData(
+                dateTime = 1743827949,
+                offset = 28800,
+                weather = WeatherCondition.CLOUDS,
+                description = "broken clouds",
+                temp = 32.86,
+                feelsLike = 39.86,
+                tempMin = 31.14,
+                tempMax = 33.0,
+                cloudiness = 75,
+                humidity = 62,
+                windSpeed = 4.12,
+                windDegree = 120,
+                city = "Sambayanihan People's Village",
+                countryCode = "PH",
+                sunrise = 1743803336,
+                sunset = 1743847698
+            )
+        )
+    }
+}
+
+@Preview(name = "Evening Preview")
+@Composable
+private fun EveningPreview() {
+    GWeatherTheme(forcedEveningMode = true) {
+        WeatherDisplay(
+            email = "kiiro",
+            onSignOut = {},
+            weatherData = WeatherData(
+                dateTime = 1743827949,
+                offset = 28800,
+                weather = WeatherCondition.CLOUDS,
+                description = "broken clouds",
+                temp = 32.86,
+                feelsLike = 39.86,
+                tempMin = 31.14,
+                tempMax = 33.0,
+                cloudiness = 75,
+                humidity = 62,
+                windSpeed = 4.12,
+                windDegree = 120,
+                city = "Sambayanihan People's Village",
+                countryCode = "PH",
+                sunrise = 1743803336,
+                sunset = 1743847698
+            )
+        )
+    }
+}

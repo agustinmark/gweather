@@ -1,5 +1,6 @@
 package com.virent.gweather.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.virent.gweather.core.data.AuthenticationRepository
@@ -7,9 +8,12 @@ import com.virent.gweather.utils.isValidEmail
 import com.virent.gweather.utils.isValidPassword
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,7 +24,7 @@ class SignUpViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<SignUpUiState>(SignUpUiState.Idle)
-    val uiState: StateFlow<SignUpUiState> = _uiState.stateIn(viewModelScope, SharingStarted.Lazily, SignUpUiState.Idle)
+    val uiState: StateFlow<SignUpUiState> = _uiState.asStateFlow()
 
     fun signUp(
         email: String,
@@ -31,11 +35,15 @@ class SignUpViewModel @Inject constructor(
     ) {
         _uiState.value = SignUpUiState.Loading
         if (!email.isValidEmail()) {
+            _uiState.value = SignUpUiState.Idle
             showSnackbar("Invalid email.")
+            return
         }
 
         if (!password.isValidPassword()) {
+            _uiState.value = SignUpUiState.Idle
             showSnackbar("Passwords should have at least eight digits and include one digit, one lower case letter and one upper case letter")
+            return
         }
 
         if (password != repeatPassword) {

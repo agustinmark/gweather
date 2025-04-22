@@ -19,30 +19,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.virent.gweather.R
 import com.virent.gweather.core.ui.icons.GWeatherIcons
 import com.virent.gweather.core.ui.icons.Sunrise
 import com.virent.gweather.core.ui.icons.Sunset
+import com.virent.gweather.core.ui.theme.GWeatherTheme
 import com.virent.gweather.utils.asTimeString
 
 @Composable
-fun SunInfo(
-    offset: Int,
-    sunrise: Long,
-    sunset: Long
-) {
+fun SunInfo(offset: Int, sunrise: Long, sunset: Long) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
+        modifier = Modifier.fillMaxWidth().background(
                 color = colorScheme.surfaceContainer,
                 shape = RoundedCornerShape(SunInfoBackgroundCornerRadius)
-            )
-            .padding(all = SunInfoPadding).alpha(0.8f)
+            ).padding(all = SunInfoPadding).alpha(0.8f)
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(SunInfoHorizontalSpacing),
@@ -60,12 +54,7 @@ fun SunInfo(
 }
 
 @Composable
-fun Sunrise(
-    offset: Int,
-    sunrise: Long,
-    modifier: Modifier = Modifier
-) {
-
+fun Sunrise(offset: Int, sunrise: Long, modifier: Modifier = Modifier) {
     Icon(
         imageVector = GWeatherIcons.Sunrise,
         contentDescription = null,
@@ -88,11 +77,7 @@ fun Sunrise(
 }
 
 @Composable
-fun Sunset(
-    offset: Int,
-    sunset: Long,
-    modifier: Modifier = Modifier
-) {
+fun Sunset(offset: Int, sunset: Long, modifier: Modifier = Modifier) {
     Column(horizontalAlignment = Alignment.End, modifier = modifier) {
         Text(
             text = sunset.asTimeString(offset),
@@ -119,3 +104,14 @@ val SunInfoBackgroundCornerRadius = 12.dp
 val SunInfoHorizontalSpacing = 12.dp
 val SunInfoDividerHeight = 32.dp
 val SunInfoIconSize = 48.dp
+
+@Preview
+@Composable
+private fun MorningPreview() { GWeatherTheme { PreviewContent() } }
+
+@Preview
+@Composable
+private fun EveningPreview() { GWeatherTheme(forcedEveningMode = true) { PreviewContent() } }
+
+@Composable
+private fun PreviewContent() { SunInfo(offset = 28800, sunrise = 1743803336, sunset = 1743847698) }
