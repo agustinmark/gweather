@@ -30,10 +30,10 @@ git clone https://github.com/agustinmark/gweather.git
 
 ### Step 3: Configure OpenWeatherMap API Key
 1. Sign up at [OpenWeatherMap](https://home.openweathermap.org/users/sign_up) and get an API key.
-2. Open the following class: src\main\java\com\virent\gweather\data\OpenWeatherMap.kt
+2. Open the following class: core-network\src\main\java\com\virent\gweather\core\network\OpenWeatherMap.kt
 3. Replace the API_KEY property with your own API key
 ```kt
-package com.virent.gweather.data  
+package com.virent.gweather.core.network  
   
 object OpenWeatherMap {  
     const val API_KEY = "PLACEHOLDER"  
