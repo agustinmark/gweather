@@ -1,24 +1,20 @@
 package com.virent.gweather.viewmodels
 
 import app.cash.turbine.test
-import com.google.firebase.auth.FirebaseUser
-import com.virent.gweather.data.AuthenticationRepository
-import com.virent.gweather.mock.MockData.EMAIL
-import com.virent.gweather.mock.MockData.PASSWORD
-import com.virent.gweather.mock.MockData.SIGNIN_ERROR_MESSAGE
-import com.virent.gweather.mock.MockData.TEST_EXCEPTION_FAIL_MESSAGE
-import com.virent.gweather.mock.MockData.WRONG_PASSWORD
+import com.virent.gweather.core.data.AuthenticationRepository
+import com.virent.gweather.MockData.EMAIL
+import com.virent.gweather.MockData.PASSWORD
+import com.virent.gweather.MockData.SIGNIN_ERROR_MESSAGE
+import com.virent.gweather.MockData.WRONG_PASSWORD
 import io.mockk.MockKAnnotations
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.just
 import io.mockk.runs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
@@ -27,10 +23,7 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 import kotlin.test.assertEquals
-import kotlin.test.fail
 
 class SignInViewModelTest {
 

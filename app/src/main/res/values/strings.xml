@@ -19,7 +19,7 @@
     <string name="txt_passwords_do_not_match">Passwords do not match</string>
 
     <!-- Weather Today -->
-    <string name="lbl_greetings">Hello!</string>
+    <string name="lbl_greetings">Hello, stranger!</string>
     <string name="lbl_greetings_user">Hey, %s!</string>
     <string name="lbl_temperature_celsius">%d&#176;C</string>
     <string name="lbl_temperature_fahrenheit">%d&#176;F</string>
@@ -36,13 +36,8 @@
     <string name="lbl_wind_stats_imperial">%1d&#176; / %2dmph</string>
     <string name="lbl_humidity">Humidity</string>
     <string name="lbl_humidity_percent">%d%%</string>
-    <string name="txt_error">Ooops! Something went wrong.</string>
-    <string name="btn_retry">Retry</string>
     <string name="btn_logout">Logout</string>
-
-    <!-- Weather Archive -->
-    <string name="txt_nothing_here">Nothing to see here.</string>
-    <string name="btn_refresh">Refresh</string>
+    <string name="error_location">Location unavailable</string>
 
     <!-- Location Permission -->
     <string name="btn_grant_location_permission">Grant Location Permission</string>

@@ -2,11 +2,11 @@ package com.virent.gweather.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.virent.gweather.data.AuthenticationRepository
-import com.virent.gweather.domain.GetCurrentWeatherUseCase
-import com.virent.gweather.domain.InsertArchiveEntryUseCase
-import com.virent.gweather.domain.Result
-import com.virent.gweather.domain.WeatherData
+import com.virent.gweather.core.data.AuthenticationRepository
+import com.virent.gweather.core.domain.GetCurrentWeatherUseCase
+import com.virent.gweather.core.domain.InsertArchiveEntryUseCase
+import com.virent.gweather.core.domain.model.WeatherData
+import com.virent.gweather.core.network.model.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,6 +27,14 @@ class WeatherTodayViewModel @Inject constructor(
 
     private val currentUser = authRepository.currentUser!!
 
+    fun showError(message: String?) {
+        _uiState.value = WeatherTodayUiState.Error(message = message)
+    }
+
+    fun showLoading() {
+        _uiState.value = WeatherTodayUiState.Loading
+    }
+
     fun fetchWeather(lat: Double, lon: Double, units: String = "metric") {
         viewModelScope.launch {
             try {
@@ -44,11 +52,10 @@ class WeatherTodayViewModel @Inject constructor(
                         )
                     }
 
-                    is Result.Error -> _uiState.value =
-                        WeatherTodayUiState.Error(message = response.message)
+                    is Result.Error -> showError(response.message)
                 }
             } catch (e: Exception) {
-                _uiState.value = WeatherTodayUiState.Error(message = e.message)
+                showError(e.message)
             }
         }
     }

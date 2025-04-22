@@ -21,4 +21,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "GWeather"
 include(":app")
- 
+include(":core-ui")
+include(":core-database")
+include(":core-data")
+include(":core-domain")
+include(":core-network")

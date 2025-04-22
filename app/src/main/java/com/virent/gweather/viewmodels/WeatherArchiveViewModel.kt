@@ -2,9 +2,9 @@ package com.virent.gweather.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.virent.gweather.data.AuthenticationRepository
-import com.virent.gweather.domain.GetUserArchiveUseCase
-import com.virent.gweather.domain.WeatherData
+import com.virent.gweather.core.data.AuthenticationRepository
+import com.virent.gweather.core.domain.GetUserArchiveUseCase
+import com.virent.gweather.core.domain.model.WeatherData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +22,13 @@ class WeatherArchiveViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<WeatherArchiveUiState>(WeatherArchiveUiState.Empty)
     val uiState: StateFlow<WeatherArchiveUiState> = _uiState.asStateFlow()
 
+    val currentUser = authRepository.currentUser!!
+
     init {
+        retrieveCurrentUserArchive()
+    }
+
+    fun retrieveCurrentUserArchive() {
         retrieveUserArchive(authRepository.currentUser!!.email!!)
     }
 

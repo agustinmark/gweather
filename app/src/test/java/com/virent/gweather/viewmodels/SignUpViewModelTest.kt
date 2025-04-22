@@ -1,10 +1,10 @@
 package com.virent.gweather.viewmodels
 
 import app.cash.turbine.test
-import com.virent.gweather.data.AuthenticationRepository
-import com.virent.gweather.mock.MockData.EMAIL
-import com.virent.gweather.mock.MockData.PASSWORD
-import com.virent.gweather.mock.MockData.WRONG_PASSWORD
+import com.virent.gweather.core.data.AuthenticationRepository
+import com.virent.gweather.MockData.EMAIL
+import com.virent.gweather.MockData.PASSWORD
+import com.virent.gweather.MockData.WRONG_PASSWORD
 import io.mockk.MockKAnnotations
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
