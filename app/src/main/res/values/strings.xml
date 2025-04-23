@@ -41,6 +41,7 @@
 
     <!-- Weather Archive -->
     <string name="btn_clear_archive">Clear Archive</string>
+    <string name="bitmap_temp_path">gweather_%d.png</string>
 
     <!-- Location Permission -->
     <string name="btn_grant_location_permission">Grant Location Permission</string>

@@ -1,14 +1,21 @@
 package com.virent.gweather.ui.tabs
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.graphics.Bitmap
 import android.location.Location
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
+import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,10 +28,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.android.gms.location.LocationServices
@@ -45,6 +57,7 @@ import com.virent.gweather.viewmodels.WeatherTodayUiState
 import com.virent.gweather.viewmodels.WeatherTodayViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.io.File
 
 @SuppressLint("MissingPermission")
 @OptIn(ExperimentalPermissionsApi::class)
@@ -125,46 +138,88 @@ private fun WeatherDisplay(
     onSignOut: () -> Unit,
     weatherData: WeatherData
 ) {
+    val coroutineScope = rememberCoroutineScope()
+    val graphicsLayer = rememberGraphicsLayer()
+    val ctx = LocalContext.current
+
+    val filePath = stringResource(R.string.bitmap_temp_path, weatherData.dateTime)
+
+    fun createAndShareBitmap() {
+        coroutineScope.launch {
+            val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
+            val file = File(ctx.cacheDir, filePath)
+            file.outputStream().use {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+            }
+
+            val uri = FileProvider.getUriForFile(ctx, "${ctx.packageName}.provider", file)
+            val intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_STREAM, uri)
+                type = "image/png"
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            ctx.startActivity(Intent.createChooser(intent, "Share Screenshot"))
+        }
+    }
+
     Column(
         verticalArrangement = Arrangement.spacedBy(WeatherTodayVerticalSpacing, alignment = Alignment.CenterVertically),
-        modifier = Modifier.fillMaxSize().padding(WeatherTodayContentPadding)
+        modifier = Modifier.fillMaxSize()
     ) {
         Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.spacedBy(WeatherTodayHeaderHorizontalSpacing),
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(horizontal = WeatherTodayContentPadding)
         ) {
             UserGreeting(email)
+            Spacer(modifier = Modifier.weight(1f))
             Button(onClick = onSignOut) {
                 Text(text = stringResource(R.string.btn_logout), style = typography.labelMedium)
             }
+            FilledIconButton(onClick = ::createAndShareBitmap) {
+                Icon(imageVector = Icons.Filled.Share, contentDescription = null)
+            }
         }
-        WeatherInfo(
-            dateTime = weatherData.dateTime,
-            offset = weatherData.offset,
-            weather = weatherData.weather,
-            description = weatherData.description,
-            temp = weatherData.temp,
-            feelsLike = weatherData.feelsLike,
-            tempMin = weatherData.tempMin,
-            tempMax = weatherData.tempMax,
-            city = weatherData.city,
-            countryCode = weatherData.countryCode
-        )
-        SunInfo(
-            offset = weatherData.offset,
-            sunrise = weatherData.sunrise,
-            sunset = weatherData.sunset
-        )
-        AdditionalInfo(
-            cloudiness = weatherData.cloudiness,
-            windSpeed = weatherData.windSpeed,
-            windDegree = weatherData.windDegree,
-            humidity = weatherData.humidity
-        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(
+                space = WeatherTodayVerticalSpacing,
+                alignment = Alignment.CenterVertically
+            ),
+            modifier = Modifier
+            .drawWithContent{
+                graphicsLayer.record { this@drawWithContent.drawContent() }
+                drawLayer(graphicsLayer)
+            }.padding(WeatherTodayContentPadding)
+        ) {
+            WeatherInfo(
+                dateTime = weatherData.dateTime,
+                offset = weatherData.offset,
+                weather = weatherData.weather,
+                description = weatherData.description,
+                temp = weatherData.temp,
+                feelsLike = weatherData.feelsLike,
+                tempMin = weatherData.tempMin,
+                tempMax = weatherData.tempMax,
+                city = weatherData.city,
+                countryCode = weatherData.countryCode
+            )
+            SunInfo(
+                offset = weatherData.offset,
+                sunrise = weatherData.sunrise,
+                sunset = weatherData.sunset
+            )
+            AdditionalInfo(
+                cloudiness = weatherData.cloudiness,
+                windSpeed = weatherData.windSpeed,
+                windDegree = weatherData.windDegree,
+                humidity = weatherData.humidity
+            )
+        }
     }
 }
 
+val WeatherTodayHeaderHorizontalSpacing = 8.dp
 val WeatherTodayContentPadding = 24.dp
 val WeatherTodayVerticalSpacing = 24.dp
 

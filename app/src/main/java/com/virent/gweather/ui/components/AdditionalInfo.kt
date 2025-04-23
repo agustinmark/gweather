@@ -97,10 +97,10 @@ fun AdditionalInfoItem(
             imageVector = imageVector,
             contentDescription = null,
             modifier = Modifier.size(AdditionalInfoItemIconSize),
-            tint = colorScheme.onSurface
+            tint = colorScheme.onSecondaryContainer
         )
-        Text(text = value, style = typography.bodyLarge, color = colorScheme.onSurface)
-        Text(text = label, style = typography.bodySmall, color = colorScheme.onSurface)
+        Text(text = value, style = typography.bodyLarge, color = colorScheme.onSecondaryContainer)
+        Text(text = label, style = typography.bodySmall, color = colorScheme.onSecondaryContainer)
     }
 }
 
