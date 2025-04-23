@@ -41,15 +41,16 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    api(libs.androidx.ui.tooling)
     api(libs.androidx.ui.graphics)
     api(libs.androidx.ui.android)
     api(libs.androidx.material)
     api(libs.androidx.ui.text)
     api(libs.androidx.material3)
-
     api(libs.lottie.compose)
 }

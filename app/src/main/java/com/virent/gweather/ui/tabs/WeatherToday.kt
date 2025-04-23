@@ -136,7 +136,7 @@ private fun WeatherDisplay(
         ) {
             UserGreeting(email)
             Button(onClick = onSignOut) {
-                Text(stringResource(R.string.btn_logout), style = typography.labelMedium)
+                Text(text = stringResource(R.string.btn_logout), style = typography.labelMedium)
             }
         }
         WeatherInfo(

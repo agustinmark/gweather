@@ -72,4 +72,16 @@ class ArchiveEntryDaoTest {
         TestCase.assertEquals(ENTRY_1, userArchive[1])
     }
 
+    @Test
+    @Throws
+    fun daoClearUserArchive_deletesAllItemsFromDB() = runTest {
+        archiveDao.add(ENTRY_1)
+        archiveDao.add(ENTRY_2)
+        archiveDao.add(ENTRY_3)
+        archiveDao.clearUserArchive(ENTRY_1.user)
+
+        val userArchive = archiveDao.getUserArchive(ENTRY_1.user).first()
+        TestCase.assertEquals(userArchive.size, 0)
+    }
+
 }

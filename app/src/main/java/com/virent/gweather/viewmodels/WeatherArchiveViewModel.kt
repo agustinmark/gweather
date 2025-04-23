@@ -3,6 +3,7 @@ package com.virent.gweather.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.virent.gweather.core.data.AuthenticationRepository
+import com.virent.gweather.core.domain.ClearUserArchiveUseCase
 import com.virent.gweather.core.domain.GetUserArchiveUseCase
 import com.virent.gweather.core.domain.model.WeatherData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherArchiveViewModel @Inject constructor(
     private val getUserArchiveUseCase: GetUserArchiveUseCase,
+    private val clearUserArchiveUseCase: ClearUserArchiveUseCase,
     private val authRepository: AuthenticationRepository
 ) : ViewModel() {
 
@@ -24,9 +26,7 @@ class WeatherArchiveViewModel @Inject constructor(
 
     val currentUser = authRepository.currentUser!!
 
-    init {
-        retrieveCurrentUserArchive()
-    }
+    init { retrieveCurrentUserArchive() }
 
     fun retrieveCurrentUserArchive() {
         retrieveUserArchive(authRepository.currentUser!!.email!!)
@@ -47,6 +47,16 @@ class WeatherArchiveViewModel @Inject constructor(
             }
         }
     }
+
+    fun clearUserArchive() { clearUserArchive(authRepository.currentUser!!.email!!) }
+
+    fun clearUserArchive(user: String) {
+        viewModelScope.launch {
+            _uiState.value = WeatherArchiveUiState.Loading
+            clearUserArchiveUseCase(user)
+            _uiState.value = WeatherArchiveUiState.Empty
+        }
+    }
 }
 
 sealed class WeatherArchiveUiState {
@@ -54,4 +64,5 @@ sealed class WeatherArchiveUiState {
     data object Empty : WeatherArchiveUiState()
     data class Error(val message: String) : WeatherArchiveUiState()
     data class Success(val data: List<WeatherData>) : WeatherArchiveUiState()
+    companion object
 }

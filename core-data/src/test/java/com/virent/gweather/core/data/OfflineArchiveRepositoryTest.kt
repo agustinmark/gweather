@@ -46,4 +46,11 @@ class OfflineArchiveRepositoryTest {
         assertEquals(ARCHIVE_ENTRY_3, response[1])
     }
 
+    @Test
+    fun `Clear User Archive`() = runTest {
+        coEvery { archiveDao.clearUserArchive(EMAIL) } just Runs
+
+        repository.clearUserArchive(EMAIL)
+        coVerify { archiveDao.clearUserArchive(EMAIL) }
+    }
 }

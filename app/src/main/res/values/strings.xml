@@ -39,6 +39,9 @@
     <string name="btn_logout">Logout</string>
     <string name="error_location">Location unavailable</string>
 
+    <!-- Weather Archive -->
+    <string name="btn_clear_archive">Clear Archive</string>
+
     <!-- Location Permission -->
     <string name="btn_grant_location_permission">Grant Location Permission</string>
     <string name="txt_location_permission_request">Checking out the weather?\nLet us know your precise location and we\'ll try to find you.</string>

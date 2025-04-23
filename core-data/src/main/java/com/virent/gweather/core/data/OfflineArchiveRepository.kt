@@ -14,4 +14,6 @@ class OfflineArchiveRepository @Inject constructor(
     override fun getUserArchive(user: String): Flow<List<ArchiveEntry>> =
         archiveDao.getUserArchive(user)
 
+    override suspend fun clearUserArchive(user: String) = archiveDao.clearUserArchive(user)
+
 }

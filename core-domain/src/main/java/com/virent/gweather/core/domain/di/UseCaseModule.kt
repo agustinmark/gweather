@@ -1,5 +1,7 @@
 package com.virent.gweather.core.domain.di
 
+import com.virent.gweather.core.domain.ClearUserArchiveUseCase
+import com.virent.gweather.core.domain.ClearUserArchiveUseCaseImpl
 import com.virent.gweather.core.domain.GetCurrentWeatherUseCase
 import com.virent.gweather.core.domain.GetCurrentWeatherUseCaseImpl
 import com.virent.gweather.core.domain.GetUserArchiveUseCase
@@ -24,6 +26,11 @@ abstract class UseCaseModule {
     abstract fun bindGetUserArchiveUseCase(
         getUserArchiveUseCaseImpl: GetUserArchiveUseCaseImpl
     ): GetUserArchiveUseCase
+
+    @Binds
+    abstract fun bindClearUserArchiveUseCase(
+        clearUserArchiveUseCaseImpl: ClearUserArchiveUseCaseImpl
+    ) : ClearUserArchiveUseCase
 
     @Binds
     abstract fun bindInsertArchiveEntryUseCase(
