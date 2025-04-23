@@ -9,4 +9,5 @@ interface ArchiveRepository {
 
     fun getUserArchive(user: String): Flow<List<ArchiveEntry>>
 
+    suspend fun clearUserArchive(user: String)
 }

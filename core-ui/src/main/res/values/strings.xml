@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="txt_nothing_here">Nothing to see here.</string>
+    <string name="txt_afloat">Stay afloat.</string>
+    <string name="txt_nothing_here">There\'s nothing to see here. Yet</string>
     <string name="txt_error">Oops! Something went wrong.</string>
 
     <string name="btn_refresh">Refresh</string>

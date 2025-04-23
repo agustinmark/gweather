@@ -57,7 +57,7 @@ fun DashboardScreen(toLanding: () -> Unit, showSnackbar: (String) -> Unit) {
 @Composable
 fun DashboardDisplay(
     pagerState: PagerState,
-    content: @Composable (Int) -> Unit
+    content: @Composable (page: Int) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     Scaffold(

@@ -1,6 +1,7 @@
 package com.virent.gweather.core.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.virent.gweather.core.database.ArchiveEntry
@@ -19,5 +20,12 @@ interface ArchiveEntryDao {
 
     @Insert
     suspend fun add(entry: ArchiveEntry)
+
+    @Query(
+        value =
+            "DELETE FROM archive " +
+                    "WHERE user == :user"
+    )
+    suspend fun clearUserArchive(user: String)
 
 }

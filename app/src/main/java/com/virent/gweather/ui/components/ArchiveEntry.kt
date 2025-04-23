@@ -1,15 +1,22 @@
 package com.virent.gweather.ui.components
 
+import android.content.Intent
+import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.rememberSwipeableState
+import androidx.compose.material.swipeable
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -17,16 +24,27 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
 import com.virent.gweather.R
-import com.virent.gweather.core.ui.icons.GWeatherIcons
+import com.virent.gweather.core.domain.model.WeatherCondition
+import com.virent.gweather.core.domain.model.WeatherData
 import com.virent.gweather.core.ui.icons.Cloudiness
+import com.virent.gweather.core.ui.icons.GWeatherIcons
 import com.virent.gweather.core.ui.icons.Humidity
 import com.virent.gweather.core.ui.icons.Location
 import com.virent.gweather.core.ui.icons.Sunrise
@@ -34,18 +52,65 @@ import com.virent.gweather.core.ui.icons.Sunset
 import com.virent.gweather.core.ui.icons.TempMax
 import com.virent.gweather.core.ui.icons.TempMin
 import com.virent.gweather.core.ui.icons.Wind
-import com.virent.gweather.core.domain.model.WeatherCondition
-import com.virent.gweather.core.domain.model.WeatherData
 import com.virent.gweather.core.ui.theme.GWeatherTheme
 import com.virent.gweather.utils.asDateTimeString
 import com.virent.gweather.utils.asTimeString
 import com.virent.gweather.utils.dateTimeHour
 import com.virent.gweather.utils.fetchImageVector
+import kotlinx.coroutines.launch
+import java.io.File
 import java.util.Locale
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ArchiveEntry(weatherData: WeatherData, modifier: Modifier = Modifier) {
-    Card(modifier = modifier) {
+    val coroutineScope = rememberCoroutineScope()
+    val graphicsLayer = rememberGraphicsLayer()
+    val ctx = LocalContext.current
+
+    val swipeState = rememberSwipeableState(initialValue = 0)
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+
+    val filePath = stringResource(R.string.bitmap_temp_path, weatherData.dateTime)
+
+    fun createAndShareBitmap() {
+        coroutineScope.launch {
+            swipeState.animateTo(0)
+            val bitmap = graphicsLayer.toImageBitmap().asAndroidBitmap()
+            val file = File(ctx.cacheDir, filePath)
+            file.outputStream().use {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+            }
+
+            val uri = FileProvider.getUriForFile(ctx, "${ctx.packageName}.provider", file)
+            val intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_STREAM, uri)
+                type = "image/png"
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            ctx.startActivity(Intent.createChooser(intent, "Share Screenshot"))
+        }
+    }
+
+    LaunchedEffect(swipeState.currentValue) {
+        if (swipeState.currentValue == 1) { createAndShareBitmap() }
+    }
+
+    Card(modifier = modifier
+        .drawWithContent{
+            graphicsLayer.record { this@drawWithContent.drawContent() }
+            drawLayer(graphicsLayer)
+        }
+        .swipeable(
+            state = swipeState,
+            anchors = mapOf(0f to 0, screenWidth.value to 1),
+            orientation = Orientation.Horizontal
+        )
+        .offset(
+            x = swipeState.offset.value.dp
+        )
+    ) {
         weatherData.run {
             DateTimeInfo(dateTime = dateTime, offset = offset)
             Row(
